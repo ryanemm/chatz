@@ -72,7 +72,11 @@ class _SignInState extends State<SignIn> {
                         },
                         style: simpleTextStyle(),
                         decoration: textFieldInputDecoration(
-                            "Password", Icon(Icons.lock, color: Colors.purple)),
+                            "Password",
+                            Icon(
+                              Icons.lock,
+                              color: Colors.purple,
+                            )),
                       ),
                     )
                   ]),
@@ -94,7 +98,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height: 16),
                 GestureDetector(
                   onTap: () {},
-                  child: SimpleButton(
+                  child: ImageButton(
                     buttonColor1: Colors.indigo.shade900,
                     buttonColor2: Colors.purple,
                     shadowColor: Colors.grey.shade600,
@@ -102,10 +106,14 @@ class _SignInState extends State<SignIn> {
                     offsetY: 7,
                     text: "Sign In",
                     width: double.infinity,
+                    iconImage: Image.asset(
+                      "assets/images/sign_in_icon.png",
+                      height: 25,
+                    ),
                   ),
                 ),
-                SizedBox(height: 16),
-                SimpleButton(
+                SizedBox(height: 22),
+                ImageButton(
                   buttonColor2: Colors.white,
                   buttonColor1: Colors.white,
                   shadowColor: Colors.grey.shade300,
@@ -114,6 +122,10 @@ class _SignInState extends State<SignIn> {
                   text: "Sign In with Google",
                   width: double.infinity,
                   textColor: Colors.black,
+                  iconImage: Image.asset(
+                    "assets/images/google_icon.png",
+                    height: 25,
+                  ),
                 ),
                 SizedBox(height: 40),
                 Row(
@@ -122,7 +134,7 @@ class _SignInState extends State<SignIn> {
                     Text("Don't have an account?  ", style: simpleTextStyle()),
                     Text("Register Now",
                         style: TextStyle(
-                            color: Colors.indigo.shade600,
+                            color: Colors.purple,
                             fontSize: 16,
                             decoration: TextDecoration.underline))
                   ],

@@ -35,21 +35,21 @@ class ImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: padding),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-              offset: Offset(offsetX, offsetY),
-              color: shadowColor,
-              blurRadius: 15,
-              spreadRadius: 0)
-        ],
-        gradient: LinearGradient(colors: [buttonColor1, buttonColor2]),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: (TextButton(
+    return GestureDetector(
+      child: Container(
+        width: width,
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: padding),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                offset: Offset(offsetX, offsetY),
+                color: shadowColor,
+                blurRadius: 15,
+                spreadRadius: 0)
+          ],
+          gradient: LinearGradient(colors: [buttonColor1, buttonColor2]),
+          borderRadius: BorderRadius.circular(30),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -60,11 +60,12 @@ class ImageButton extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: textColor),
             ),
+            SizedBox(width: 10),
             iconImage
+            // Image.asset("assets/images/google_icon.png", height: 40),
           ],
         ),
-        onPressed: () {},
-      )),
+      ),
     );
   }
 }
