@@ -17,15 +17,10 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.purple,
+        color: Colors.grey[50],
         child: Stack(children: [
           Container(
-            decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                )),
+            color: Colors.grey[50],
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [

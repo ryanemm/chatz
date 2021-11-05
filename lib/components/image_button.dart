@@ -60,7 +60,7 @@ class ImageButton extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: textColor),
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 5),
             iconImage
             // Image.asset("assets/images/google_icon.png", height: 40),
           ],
