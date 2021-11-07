@@ -3,6 +3,7 @@ import 'package:chatz/components/simple_button.dart';
 import 'package:chatz/widgets/widgets.dart';
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
 //  final Function toggle;
