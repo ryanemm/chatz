@@ -20,7 +20,7 @@ class _SignInState extends State<SignIn> {
         color: Colors.grey[50],
         child: Stack(children: [
           Container(
-            color: Colors.grey[50],
+            color: Color(0xffFFFDD1).withOpacity(0.2),
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
@@ -69,7 +69,7 @@ class _SignInState extends State<SignIn> {
                         decoration: textFieldInputDecoration(
                             "Password",
                             Icon(
-                              Icons.lock,
+                              Icons.lock_outline,
                               color: Colors.purple,
                             )),
                       ),

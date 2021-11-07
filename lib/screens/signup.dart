@@ -15,12 +15,17 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailEditingController = new TextEditingController();
+    TextEditingController passwordEditingController =
+        new TextEditingController();
+    TextEditingController usernameEditingController =
+        new TextEditingController();
     return Scaffold(
       body: Container(
         color: Colors.grey[50],
         child: Stack(children: [
           Container(
-            color: Colors.grey[50],
+            color: Color(0xffFFFDD1).withOpacity(0.2),
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               children: [
@@ -38,11 +43,12 @@ class _SignUpState extends State<SignUp> {
                                 blurRadius: 20),
                           ]),
                       child: TextFormField(
+                        controller: usernameEditingController,
                         style: simpleTextStyle(),
                         decoration: textFieldInputDecoration(
                             "Username",
                             Icon(
-                              Icons.account_circle_rounded,
+                              Icons.account_circle_outlined,
                               color: Colors.purple,
                             )),
                       ),
@@ -59,11 +65,12 @@ class _SignUpState extends State<SignUp> {
                                 blurRadius: 20),
                           ]),
                       child: TextFormField(
+                        controller: emailEditingController,
                         style: simpleTextStyle(),
                         decoration: textFieldInputDecoration(
                             "Email",
                             Icon(
-                              Icons.email_rounded,
+                              Icons.email_outlined,
                               color: Colors.purple,
                             )),
                       ),
@@ -80,6 +87,7 @@ class _SignUpState extends State<SignUp> {
                                 blurRadius: 20),
                           ]),
                       child: TextFormField(
+                        controller: passwordEditingController,
                         obscureText: true,
                         validator: (val) {
                           return val!.length > 8
@@ -90,7 +98,7 @@ class _SignUpState extends State<SignUp> {
                         decoration: textFieldInputDecoration(
                             "Password",
                             Icon(
-                              Icons.lock_rounded,
+                              Icons.lock_outline_rounded,
                               color: Colors.purple,
                             )),
                       ),
