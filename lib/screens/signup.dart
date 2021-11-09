@@ -2,6 +2,7 @@ import 'package:chatz/components/image_button.dart';
 import 'package:chatz/components/simple_button.dart';
 import 'package:chatz/screens/dummy_profile.dart';
 import 'package:chatz/services/auth.dart';
+import 'package:chatz/services/database.dart';
 import 'package:chatz/widgets/widgets.dart';
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
@@ -28,6 +29,7 @@ class _SignUpState extends State<SignUp> {
     bool isLoading = false;
 
     AuthService authService = new AuthService();
+    DatabaseMethods databaseMethods = new DatabaseMethods();
 
     signUp() async {
       if (formKey.currentState!.validate()) {
@@ -40,6 +42,12 @@ class _SignUpState extends State<SignUp> {
                 passwordEditingController.text, usernameEditingController.text)
             .then((user) {
           if (user != null) {
+            Map<String, String> userInfoMap = {
+              "name": usernameEditingController.text,
+              "email": emailEditingController.text,
+            };
+
+            databaseMethods.uploadUserInfo(userInfoMap);
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => ProfilePage(user: user)));
           }
