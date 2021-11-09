@@ -1,5 +1,6 @@
 import 'package:chatz/components/image_button.dart';
 import 'package:chatz/components/simple_button.dart';
+import 'package:chatz/screens/dummy_profile.dart';
 import 'package:chatz/services/auth.dart';
 import 'package:chatz/widgets/widgets.dart';
 import "package:flutter/material.dart";
@@ -35,18 +36,12 @@ class _SignUpState extends State<SignUp> {
         });
 
         await authService
-            .signUpWithEmailAndPassword(
-                emailEditingController.text, passwordEditingController.text)
-            .then((result) {
-          if (result != null) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Container(
-                          child: Center(
-                            child: Text("Chat room screen"),
-                          ),
-                        )));
+            .signUpWithEmailAndPassword(emailEditingController.text,
+                passwordEditingController.text, usernameEditingController.text)
+            .then((user) {
+          if (user != null) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => ProfilePage(user: user)));
           }
         });
       }

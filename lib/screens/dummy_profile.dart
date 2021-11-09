@@ -1,17 +1,19 @@
-import 'package:chatz/screens/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ChatRoom extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   final User user;
-  const ChatRoom({required this.user});
+  const ProfilePage({required this.user});
 
   @override
-  _ChatRoomState createState() => _ChatRoomState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
+class _ProfilePageState extends State<ProfilePage> {
+  bool isSendingVerification = false;
+  bool isSigningOut = false;
   late User _currentUser;
+
   @override
   void initState() {
     _currentUser = widget.user;
@@ -22,15 +24,9 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chatz"),
+        title: Text("Profile"),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.search),
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => SearchScreen()));
-          }),
-      body: Container(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

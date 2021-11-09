@@ -1,6 +1,11 @@
 import 'package:chatz/components/image_button.dart';
 import 'package:chatz/components/simple_button.dart';
+import 'package:chatz/screens/chat_room.dart';
+import 'package:chatz/screens/dummy_profile.dart';
+import 'package:chatz/screens/signup.dart';
+import 'package:chatz/services/auth.dart';
 import 'package:chatz/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
@@ -13,8 +18,29 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    AuthService authService = new AuthService();
+    TextEditingController _emailEditingController = new TextEditingController();
+    TextEditingController _passwordEditingController =
+        new TextEditingController();
+
+    signIn() async {
+      if (_formKey.currentState!.validate()) {
+        await authService
+            .signInWithEmailAndPassword(
+                _emailEditingController.text, _passwordEditingController.text)
+            .then((user) {
+          if (user != null) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => ChatRoom(user: user)));
+          }
+        });
+      }
+    }
+
     return Scaffold(
       body: Container(
         color: Colors.grey[50],
@@ -26,6 +52,7 @@ class _SignInState extends State<SignIn> {
               children: [
                 Spacer(),
                 Form(
+                  key: _formKey,
                   child: Column(children: [
                     Container(
                       decoration: BoxDecoration(
@@ -38,6 +65,7 @@ class _SignInState extends State<SignIn> {
                                 blurRadius: 20),
                           ]),
                       child: TextFormField(
+                        controller: _emailEditingController,
                         style: simpleTextStyle(),
                         decoration: textFieldInputDecoration(
                             "Email",
@@ -59,6 +87,7 @@ class _SignInState extends State<SignIn> {
                                 blurRadius: 20),
                           ]),
                       child: TextFormField(
+                        controller: _passwordEditingController,
                         obscureText: true,
                         validator: (val) {
                           return val!.length > 8
@@ -92,7 +121,9 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 16),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    signIn();
+                  },
                   child: ImageButton(
                     buttonColor1: Colors.indigo.shade900,
                     buttonColor2: Colors.purple,
@@ -127,11 +158,17 @@ class _SignInState extends State<SignIn> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Don't have an account?  ", style: simpleTextStyle()),
-                    Text("Register Now",
-                        style: TextStyle(
-                            color: Colors.purple,
-                            fontSize: 16,
-                            decoration: TextDecoration.underline))
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => SignUp()));
+                      },
+                      child: Text("Register Now",
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontSize: 16,
+                              decoration: TextDecoration.underline)),
+                    )
                   ],
                 ),
                 SizedBox(
