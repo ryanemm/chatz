@@ -6,6 +6,7 @@ import 'package:chatz/screens/signup.dart';
 import 'package:chatz/services/auth.dart';
 import 'package:chatz/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
@@ -18,6 +19,36 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  //set the default state of _initialized and _error to false
+  bool _initialized = false;
+  bool _error = false;
+
+  // async function to initialize firebase
+  void initializeFlutterFire() async {
+    try {
+      await Firebase.initializeApp();
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => ChatRoom(user: user)));
+      }
+      setState(() {
+        _initialized = true;
+      });
+    } catch (e) {
+      // set error state to true if Firebase initialization fails
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    initializeFlutterFire();
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -39,6 +70,22 @@ class _SignInState extends State<SignIn> {
           }
         });
       }
+    }
+
+    if (_error) {
+      return Container(
+        child: Center(
+          child: Text("Something went wrong"),
+        ),
+      );
+    }
+
+    if (!_initialized) {
+      return Container(
+        child: CircularProgressIndicator(
+          semanticsLabel: "Initializing Firebase",
+        ),
+      );
     }
 
     return Scaffold(

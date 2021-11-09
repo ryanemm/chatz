@@ -1,4 +1,5 @@
 import 'package:chatz/screens/search.dart';
+import 'package:chatz/screens/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,15 @@ class _ChatRoomState extends State<ChatRoom> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Chatz"),
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => SignIn()));
+            },
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.search),
