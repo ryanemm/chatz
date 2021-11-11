@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   ///create a chatroom, send the user to a conversation screen, pushReplacement
   createRoomStartConversation(String username,) {
-    List<String> users = [];
+    List<String> users = [username, ]; 
     databaseMethods.CreateChatRoom(chatRoomId, chatRoomMap)
   }
 
