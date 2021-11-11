@@ -1,3 +1,5 @@
+import 'package:chatz/helper/constants.dart';
+import 'package:chatz/helper/helper_functions.dart';
 import 'package:chatz/screens/search.dart';
 import 'package:chatz/screens/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +18,12 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     _currentUser = widget.user;
+    getUserInfo();
     super.initState();
+  }
+
+  getUserInfo() async {
+    Constants.myName = await HelperFunctions.getUsernameSharedPreference();
   }
 
   @override

@@ -5,7 +5,9 @@ import 'package:chatz/screens/chat_room.dart';
 import 'package:chatz/screens/dummy_profile.dart';
 import 'package:chatz/screens/signup.dart';
 import 'package:chatz/services/auth.dart';
+import 'package:chatz/services/database.dart';
 import 'package:chatz/widgets/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
@@ -35,14 +37,24 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     AuthService authService = new AuthService();
+    DatabaseMethods databaseMethods = new DatabaseMethods();
     TextEditingController _emailEditingController = new TextEditingController();
     TextEditingController _passwordEditingController =
         new TextEditingController();
+
+    QuerySnapshot snapshotUserInfo;
 
     signIn() async {
       if (_formKey.currentState!.validate()) {
         HelperFunctions.saveUserEmailSharedPreference(
             _emailEditingController.text);
+        databaseMethods
+            .getUserByEmail(_emailEditingController.text)
+            .then((val) {
+          snapshotUserInfo = val;
+          HelperFunctions.saveUserEmailSharedPreference(
+              snapshotUserInfo.docs[0].get("name"));
+        });
         await authService
             .signInWithEmailAndPassword(
                 _emailEditingController.text, _passwordEditingController.text)

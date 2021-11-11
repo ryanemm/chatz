@@ -1,4 +1,5 @@
 import 'package:chatz/components/simple_button.dart';
+import 'package:chatz/helper/constants.dart';
 import 'package:chatz/services/database.dart';
 import 'package:chatz/widgets/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,8 +38,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   ///create a chatroom, send the user to a conversation screen, pushReplacement
   createRoomStartConversation(String username,) {
-    List<String> users = [username, ]; 
-    databaseMethods.CreateChatRoom(chatRoomId, chatRoomMap)
+    List<String?> users = [username, Constants.myName];
+    Map<String, dynamic> chatRoomMap = {
+      "users" : users,
+      "chatRoomId" : ,
+    };
+    databaseMethods.CreateChatRoom(chatRoomId, chatRoomMap);
   }
 
   Widget searchList() {
