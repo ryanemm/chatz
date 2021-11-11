@@ -19,34 +19,14 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  //set the default state of _initialized and _error to false
-  bool _initialized = false;
-  bool _error = false;
-
-  // async function to initialize firebase
-  void initializeFlutterFire() async {
-    try {
-      await Firebase.initializeApp();
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => ChatRoom(user: user)));
-      }
-      setState(() {
-        _initialized = true;
-      });
-    } catch (e) {
-      // set error state to true if Firebase initialization fails
-      setState(() {
-        _error = true;
-      });
-    }
-  }
-
   @override
   void initState() {
-    initializeFlutterFire();
     super.initState();
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => ChatRoom(user: user)));
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -70,22 +50,6 @@ class _SignInState extends State<SignIn> {
           }
         });
       }
-    }
-
-    if (_error) {
-      return Container(
-        child: Center(
-          child: Text("Something went wrong"),
-        ),
-      );
-    }
-
-    if (!_initialized) {
-      return Container(
-        child: CircularProgressIndicator(
-          semanticsLabel: "Initializing Firebase",
-        ),
-      );
     }
 
     return Scaffold(

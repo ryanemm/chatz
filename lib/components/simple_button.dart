@@ -33,7 +33,7 @@ class SimpleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: padding),
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: padding),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -43,7 +43,7 @@ class SimpleButton extends StatelessWidget {
               spreadRadius: 0)
         ],
         gradient: LinearGradient(colors: [buttonColor1, buttonColor2]),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(40),
       ),
       child: (TextButton(
         child: Row(
@@ -56,10 +56,6 @@ class SimpleButton extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: textColor),
             ),
-            Icon(
-              Icons.arrow_right_rounded,
-              color: Colors.white,
-            )
           ],
         ),
         onPressed: () {},

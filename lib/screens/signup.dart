@@ -1,5 +1,6 @@
 import 'package:chatz/components/image_button.dart';
 import 'package:chatz/components/simple_button.dart';
+import 'package:chatz/screens/chat_room.dart';
 import 'package:chatz/screens/dummy_profile.dart';
 import 'package:chatz/services/auth.dart';
 import 'package:chatz/services/database.dart';
@@ -48,8 +49,14 @@ class _SignUpState extends State<SignUp> {
             };
 
             databaseMethods.uploadUserInfo(userInfoMap);
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => ProfilePage(user: user)));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChatRoom(
+                          user: user,
+                        )));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => ChatRoom(user: user)));
           }
         });
       }

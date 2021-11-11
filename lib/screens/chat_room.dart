@@ -26,32 +26,36 @@ class _ChatRoomState extends State<ChatRoom> {
         title: Text("Chatz"),
         actions: [
           GestureDetector(
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => SignIn()));
-            },
-          )
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => SignIn()));
+              },
+              child: Center(child: Text("Sign Out")))
         ],
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.search),
           onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => SearchScreen()));
+            Future.delayed(Duration.zero, () {
+              Navigator.push((context),
+                  MaterialPageRoute(builder: (context) => SearchScreen()));
+            });
           }),
       body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("NAME: ${_currentUser.displayName}"),
-            SizedBox(height: 16),
-            Text("EMAIL: ${_currentUser.email}"),
-            SizedBox(height: 16),
-            _currentUser.emailVerified
-                ? Text("Email verified")
-                : Text("Email not verified"),
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("NAME: ${_currentUser.displayName}"),
+              SizedBox(height: 16),
+              Text("EMAIL: ${_currentUser.email}"),
+              SizedBox(height: 16),
+              _currentUser.emailVerified
+                  ? Text("Email verified")
+                  : Text("Email not verified"),
+            ],
+          ),
         ),
       ),
     );
