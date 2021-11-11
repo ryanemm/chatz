@@ -1,5 +1,6 @@
 import 'package:chatz/components/image_button.dart';
 import 'package:chatz/components/simple_button.dart';
+import 'package:chatz/helper/helper_functions.dart';
 import 'package:chatz/screens/chat_room.dart';
 import 'package:chatz/screens/dummy_profile.dart';
 import 'package:chatz/screens/signup.dart';
@@ -40,11 +41,14 @@ class _SignInState extends State<SignIn> {
 
     signIn() async {
       if (_formKey.currentState!.validate()) {
+        HelperFunctions.saveUserEmailSharedPreference(
+            _emailEditingController.text);
         await authService
             .signInWithEmailAndPassword(
                 _emailEditingController.text, _passwordEditingController.text)
             .then((user) {
           if (user != null) {
+            HelperFunctions.saveUserLoggedInSharedPreference(true);
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => ChatRoom(user: user)));
           }

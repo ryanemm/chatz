@@ -1,5 +1,6 @@
 import 'package:chatz/components/image_button.dart';
 import 'package:chatz/components/simple_button.dart';
+import 'package:chatz/helper/helper_functions.dart';
 import 'package:chatz/screens/chat_room.dart';
 import 'package:chatz/screens/dummy_profile.dart';
 import 'package:chatz/services/auth.dart';
@@ -31,6 +32,7 @@ class _SignUpState extends State<SignUp> {
 
     AuthService authService = new AuthService();
     DatabaseMethods databaseMethods = new DatabaseMethods();
+    // HelperFunctions helperFunctions = new HelperFunctions();
 
     signUp() async {
       if (formKey.currentState!.validate()) {
@@ -47,8 +49,13 @@ class _SignUpState extends State<SignUp> {
               "name": usernameEditingController.text,
               "email": emailEditingController.text,
             };
+            HelperFunctions.saveUserEmailSharedPreference(
+                emailEditingController.text);
+            HelperFunctions.saveUsernameSharedPreference(
+                usernameEditingController.text);
 
             databaseMethods.uploadUserInfo(userInfoMap);
+            HelperFunctions.saveUserLoggedInSharedPreference(true);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
