@@ -1,5 +1,6 @@
 import 'package:chatz/components/simple_button.dart';
 import 'package:chatz/helper/constants.dart';
+import 'package:chatz/screens/conversation_screen.dart';
 import 'package:chatz/services/database.dart';
 import 'package:chatz/widgets/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,28 +25,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   QuerySnapshot? searchSnapshot;
 
-  initiateSearch() {
-    databaseMethods
-        .getUserByUsername(searchTextEditingController.text)
-        .then((val) {
-      print(val.toString());
-      setState(() {
-        searchSnapshot = val;
-      });
-      return val;
-    });
-  }
-
-  ///create a chatroom, send the user to a conversation screen, pushReplacement
-  createRoomStartConversation(String username,) {
-    List<String?> users = [username, Constants.myName];
-    Map<String, dynamic> chatRoomMap = {
-      "users" : users,
-      "chatRoomId" : ,
-    };
-    databaseMethods.CreateChatRoom(chatRoomId, chatRoomMap);
-  }
-
   Widget searchList() {
     return searchSnapshot != null
         ? ListView.builder(
@@ -58,6 +37,18 @@ class _SearchScreenState extends State<SearchScreen> {
               );
             })
         : Container();
+  }
+
+  initiateSearch() {
+    databaseMethods
+        .getUserByUsername(searchTextEditingController.text)
+        .then((val) {
+      print(val.toString());
+      setState(() {
+        searchSnapshot = val;
+      });
+      return val;
+    });
   }
 
   @override
@@ -103,6 +94,19 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
+///create a chatroom, send the user to a conversation screen, pushReplacement
+createRoomStartConversation({BuildContext context, String username}) {
+  String chatRoomId = getChatRoomId(username, Constants.myName);
+  List<String?> users = [username, Constants.myName];
+  Map<String, dynamic> chatRoomMap = {
+    "users": users,
+    "chatRoomId": chatRoomId,
+  };
+  DatabaseMethods().CreateChatRoom(chatRoomId, chatRoomMap);
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => ConversationScreen()));
+}
+
 class SearchTile extends StatelessWidget {
   final String username;
   final String userEmail;
@@ -139,5 +143,13 @@ class SearchTile extends StatelessWidget {
             )
           ],
         ));
+  }
+}
+
+getChatRoomId(String a, String b) {
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
   }
 }
