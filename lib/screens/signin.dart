@@ -1,5 +1,6 @@
 import 'package:chatz/components/image_button.dart';
 import 'package:chatz/components/simple_button.dart';
+import 'constants.dart';
 import 'package:chatz/helper/helper_functions.dart';
 import 'package:chatz/screens/chat_room.dart';
 import 'package:chatz/screens/dummy_profile.dart';
@@ -48,18 +49,23 @@ class _SignInState extends State<SignIn> {
       if (_formKey.currentState!.validate()) {
         HelperFunctions.saveUserEmailSharedPreference(
             _emailEditingController.text);
-        databaseMethods
-            .getUserByEmail(_emailEditingController.text)
-            .then((val) {
-          snapshotUserInfo = val;
-          HelperFunctions.saveUserEmailSharedPreference(
-              snapshotUserInfo.docs[0].get("name"));
-        });
+
         await authService
             .signInWithEmailAndPassword(
                 _emailEditingController.text, _passwordEditingController.text)
             .then((user) {
           if (user != null) {
+            databaseMethods
+                .getUserByEmail(_emailEditingController.text)
+                .then((val) {
+              snapshotUserInfo = val;
+              HelperFunctions.saveUserEmailSharedPreference(
+                  snapshotUserInfo.docs[0].get("name"));
+              print(Constants.myName);
+              Constants.myName = snapshotUserInfo.docs[0].get("name");
+              print(Constants.myName);
+              print("stuff");
+            });
             HelperFunctions.saveUserLoggedInSharedPreference(true);
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => ChatRoom(user: user)));

@@ -1,3 +1,4 @@
+import 'package:chatz/helper/helper_functions.dart';
 import 'package:chatz/screens/chat_room.dart';
 import 'package:chatz/screens/home_screen.dart';
 import 'package:chatz/screens/signin.dart';
@@ -19,7 +20,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  @override
+  bool? userIsLoggedIn;
+
+  getLoggedInState() async {
+    await HelperFunctions.getUserLoggedInSharedPreference().then((value) {});
+  }
+
   Widget build(BuildContext context) {
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
 

@@ -1,4 +1,4 @@
-import 'package:chatz/helper/constants.dart';
+import 'package:chatz/screens/constants.dart';
 import 'package:chatz/helper/helper_functions.dart';
 import 'package:chatz/screens/search.dart';
 import 'package:chatz/screens/signin.dart';
@@ -15,6 +15,7 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   late User _currentUser;
+  // Constants constants = new Constants();
   @override
   void initState() {
     _currentUser = widget.user;
@@ -23,11 +24,12 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   getUserInfo() async {
-    Constants.myName = (await HelperFunctions.getUsernameSharedPreference())!;
+    Constants.myName = (await HelperFunctions.getUsernameSharedPreference());
   }
 
   @override
   Widget build(BuildContext context) {
+    // print("@ chatRoom " + Constants.myName!);
     return Scaffold(
       appBar: AppBar(
         title: Text("Chatz"),

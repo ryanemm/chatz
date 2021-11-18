@@ -1,5 +1,5 @@
 import 'package:chatz/components/simple_button.dart';
-import 'package:chatz/helper/constants.dart';
+import 'package:chatz/screens/constants.dart';
 import 'package:chatz/screens/conversation_screen.dart';
 import 'package:chatz/services/database.dart';
 import 'package:chatz/widgets/widgets.dart';
@@ -16,6 +16,62 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchTextEditingController = TextEditingController();
+
+  ///create a chatroom, send the user to a conversation screen, pushReplacement
+  createRoomStartConversation({String? username}) {
+    print("$username");
+    print(Constants.myName);
+
+    if (username != Constants.myName) {
+      String chatRoomId = getChatRoomId(username!, Constants.myName!);
+      List<String?> users = [username, Constants.myName];
+      Map<String, dynamic> chatRoomMap = {
+        "users": users,
+        "chatRoomId": chatRoomId,
+      };
+      DatabaseMethods().CreateChatRoom(chatRoomId, chatRoomMap);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ConversationScreen()));
+    } else {
+      print("Cannot send message to yourself");
+    }
+  }
+
+  Widget SearchTile({required String username, required String userEmail}) {
+    return Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: GestureDetector(
+          onTap: () {
+            print("Creating chat room");
+            createRoomStartConversation(username: username);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    username,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    userEmail,
+                    style: simpleTextStyle(),
+                  )
+                ],
+              ),
+              SimpleButton(
+                text: "Message",
+                width: 100,
+                shadowColor: Colors.transparent,
+                padding: 0,
+              )
+            ],
+          ),
+        ));
+  }
 
   @override
   void initState() {
@@ -91,58 +147,6 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
-  }
-}
-
-///create a chatroom, send the user to a conversation screen, pushReplacement
-createRoomStartConversation({BuildContext context, String username}) {
-  String chatRoomId = getChatRoomId(username, Constants.myName);
-  List<String?> users = [username, Constants.myName];
-  Map<String, dynamic> chatRoomMap = {
-    "users": users,
-    "chatRoomId": chatRoomId,
-  };
-  DatabaseMethods().CreateChatRoom(chatRoomId, chatRoomMap);
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => ConversationScreen()));
-}
-
-class SearchTile extends StatelessWidget {
-  final String username;
-  final String userEmail;
-  const SearchTile({required this.userEmail, required this.username});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  username,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  userEmail,
-                  style: simpleTextStyle(),
-                )
-              ],
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: SimpleButton(
-                text: "Message",
-                width: 100,
-                shadowColor: Colors.transparent,
-                padding: 0,
-              ),
-            )
-          ],
-        ));
   }
 }
 
