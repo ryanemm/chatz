@@ -30,8 +30,12 @@ class _SearchScreenState extends State<SearchScreen> {
         "chatRoomId": chatRoomId,
       };
       DatabaseMethods().CreateChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ConversationScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(
+                    chatRoomId: chatRoomId,
+                  )));
     } else {
       print("Cannot send message to yourself");
     }
