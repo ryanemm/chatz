@@ -13,6 +13,17 @@ class ConversationScreen extends StatefulWidget {
 }
 
 class _ConversationScreenState extends State<ConversationScreen> {
+  @override
+  void initState() {
+    databaseMethods.getConversationMessages(widget.chatRoomId).then((value) {
+      setState(() {
+        chatMessagesStream = value;
+        print("stuff");
+      });
+    });
+    super.initState();
+  }
+
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageTextEditingController =
       new TextEditingController();
@@ -21,14 +32,19 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget chatMessageList() {
     return StreamBuilder(
       stream: chatMessagesStream,
-      builder: (context, AsyncSnapshot snapshot) {
-        return ListView.builder(
-          itemCount: snapshot.data.documents.length,
-          itemBuilder: (context, index) {
-            return MessageTile(
-                message: snapshot.data.docs[index].data["message"]);
-          },
-        );
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return ListView.builder(
+            itemCount: snapshot.data.docs.length,
+            itemBuilder: (context, index) {
+              return MessageTile(message: snapshot.data.docs[index]["message"]);
+            },
+          );
+        }
       },
     );
   }
@@ -45,16 +61,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   @override
-  void initState() {
-    databaseMethods.getConversationMessages(widget.chatRoomId).then((value) {
-      setState(() {
-        chatMessagesStream = value;
-      });
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -63,6 +69,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
         child: Stack(
           children: [
+            chatMessageList(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
