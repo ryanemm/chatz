@@ -1,5 +1,6 @@
 import 'package:chatz/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'constants.dart';
 
@@ -41,7 +42,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
           return ListView.builder(
             itemCount: snapshot.data.docs.length,
             itemBuilder: (context, index) {
-              return MessageTile(message: snapshot.data.docs[index]["message"]);
+              return MessageTile(
+                message: snapshot.data.docs[index]["message"],
+                isSentByMe:
+                    snapshot.data.docs[index]["sentBy"] == Constants.myName,
+              );
             },
           );
         }
@@ -51,9 +56,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   sendMessage() {
     if (messageTextEditingController.text.isNotEmpty) {
-      Map<String, String> messageMap = {
+      Map<String, dynamic> messageMap = {
         "message": messageTextEditingController.text,
-        "sentBy": Constants.myName!
+        "sentBy": Constants.myName!,
+        "time": DateTime.now().millisecondsSinceEpoch,
       };
       databaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
       messageTextEditingController.text = "";
@@ -106,13 +112,35 @@ class _ConversationScreenState extends State<ConversationScreen> {
 }
 
 class MessageTile extends StatelessWidget {
-  const MessageTile({Key? key, required this.message}) : super(key: key);
+  const MessageTile({Key? key, required this.message, required this.isSentByMe})
+      : super(key: key);
   final String message;
+  final bool isSentByMe;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(message),
+      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      width: MediaQuery.of(context).size.width,
+      alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        decoration: BoxDecoration(
+            color: isSentByMe ? Colors.indigo : Colors.grey.shade700,
+            borderRadius: isSentByMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30),
+                  )
+                : BorderRadius.only(
+                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  )),
+        child: Text(message,
+            style: GoogleFonts.nunito(color: Colors.white, fontSize: 16)),
+      ),
     );
   }
 }

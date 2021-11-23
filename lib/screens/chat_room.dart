@@ -2,6 +2,7 @@ import 'package:chatz/screens/constants.dart';
 import 'package:chatz/helper/helper_functions.dart';
 import 'package:chatz/screens/search.dart';
 import 'package:chatz/screens/signin.dart';
+import 'package:chatz/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,15 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   late User _currentUser;
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   // Constants constants = new Constants();
   @override
   void initState() {
     _currentUser = widget.user;
     getUserInfo();
+    databaseMethods.getChatsList(Constants.myName!).then(() {
+      Stream chatRoomsScreen;
+    });
     super.initState();
   }
 
