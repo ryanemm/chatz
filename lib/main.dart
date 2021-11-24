@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget build(BuildContext context) {
-    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
 
     return FutureBuilder(
         future: _initialization,

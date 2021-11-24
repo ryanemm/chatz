@@ -32,6 +32,7 @@ class _ChatRoomState extends State<ChatRoom> {
           );
         } else {
           return ListView.builder(
+              shrinkWrap: true,
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 return ChatRoomTile(
@@ -40,6 +41,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       .replaceAll("_", "")
                       .replaceAll(Constants.myName.toString(), ""),
                   chatRoomId: snapshot.data.docs[index]["chatRoomId"],
+                  // lastMessage: snapshot.data.docs[index]["message"],
                 );
               });
         }
@@ -76,7 +78,29 @@ class _ChatRoomState extends State<ChatRoom> {
         : print("Not assigned");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chatz"),
+        toolbarHeight: 70,
+        elevation: 0,
+        title: Row(
+          children: [
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                      "assets/images/avi.jpeg",
+                    ),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+            ),
+            SizedBox(width: 16),
+            Text(
+              "Messages",
+              style: GoogleFonts.nunito(fontWeight: FontWeight.w700),
+            )
+          ],
+        ),
         actions: [
           GestureDetector(
               onTap: () async {
@@ -84,46 +108,114 @@ class _ChatRoomState extends State<ChatRoom> {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => SignIn()));
               },
-              child: Center(child: Text("Sign Out")))
+              child: Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.menu),
+              )))
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat_outlined), label: "Messages"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_active_outlined),
+              label: "Notifications"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings_outlined), label: "Settings")
+        ],
+      ),
+      /*floatingActionButton: FloatingActionButton(
           child: Icon(Icons.search),
           onPressed: () {
             Future.delayed(Duration.zero, () {
               Navigator.push((context),
                   MaterialPageRoute(builder: (context) => SearchScreen()));
             });
-          }),
-      body: Container(child: chatRoomList()
-          /*Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("NAME: ${_currentUser.displayName}"),
-              SizedBox(height: 16),
-              Text("EMAIL: ${_currentUser.email}"),
-              SizedBox(height: 16),
-              _currentUser.emailVerified
-                  ? Text("Email verified")
-                  : Text("Email not verified"),
-            ],
-          ),
-        ),*/
-          ),
+          }),*/
+      body: Container(
+        color: Colors.purple,
+        child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey.shade300,
+                            blurRadius: 4,
+                            offset: Offset(0, 4))
+                      ],
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      color: Colors.grey[200]),
+                  child: TextField(
+                    // controller: searchTextEditingController,
+
+                    decoration: InputDecoration(
+                        icon: Icon(Icons.search),
+                        hintText: "Search users",
+                        hintStyle: TextStyle(color: Colors.grey[400]),
+                        border: InputBorder.none),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text("Messages",
+                      style: GoogleFonts.nunito(
+                          fontSize: 16, fontWeight: FontWeight.w700)),
+                ),
+                chatRoomList(),
+              ],
+            )
+            /*Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("NAME: ${_currentUser.displayName}"),
+                SizedBox(height: 16),
+                Text("EMAIL: ${_currentUser.email}"),
+                SizedBox(height: 16),
+                _currentUser.emailVerified
+                    ? Text("Email verified")
+                    : Text("Email not verified"),
+              ],
+            ),
+          ),*/
+            ),
+      ),
     );
   }
 }
 
 class ChatRoomTile extends StatelessWidget {
-  const ChatRoomTile(
-      {Key? key, required this.userName, required this.chatRoomId})
-      : super(key: key);
+  const ChatRoomTile({
+    Key? key,
+    required this.userName,
+    required this.chatRoomId,
+    // required this.lastMessage
+  }) : super(key: key);
   final String userName;
   final String chatRoomId;
+  // final String lastMessage;
 
   @override
   Widget build(BuildContext context) {
+    Stream? messagesStream;
+    DatabaseMethods _databaseMethods = new DatabaseMethods();
+    _databaseMethods.getConversationMessages(chatRoomId).then((val) {
+      messagesStream = val;
+    });
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -135,12 +227,12 @@ class ChatRoomTile extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         child: Row(
           children: [
             Container(
-              height: 60,
-              width: 60,
+              height: 50,
+              width: 50,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                   color: Colors.indigo,
@@ -162,13 +254,16 @@ class ChatRoomTile extends StatelessWidget {
                   Text(
                     userName,
                     style: GoogleFonts.nunito(
-                        fontSize: 18, fontWeight: FontWeight.w700),
+                        fontSize: 16, fontWeight: FontWeight.w700),
                   ),
+                  // Text(lastMessage)
                   Text(
                     "This is the last message that was sent in this chat. Let's make it longer to see if the overflow parameter does its job",
-                    maxLines: 2,
-                    softWrap: false,
+                    maxLines: 1,
+                    softWrap: true,
                     overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.nunito(
+                        color: Colors.grey[700], fontSize: 14),
                   )
                 ],
               ),
