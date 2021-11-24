@@ -30,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
         "chatRoomId": chatRoomId,
       };
       DatabaseMethods().CreateChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => ConversationScreen(
