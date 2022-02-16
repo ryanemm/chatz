@@ -78,29 +78,18 @@ class _ChatRoomState extends State<ChatRoom> {
         : print("Not assigned");
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 70,
+        toolbarHeight: 60,
         elevation: 0,
-        title: Row(
-          children: [
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                      "assets/images/avi.jpeg",
-                    ),
-                    fit: BoxFit.cover),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-            ),
-            SizedBox(width: 16),
-            Text(
-              "Messages",
-              style: GoogleFonts.nunito(fontWeight: FontWeight.w700),
-            )
-          ],
+        title: Text(
+          "Messages (3)",
+          style: GoogleFonts.nunito(fontWeight: FontWeight.w600),
         ),
+        flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+          Colors.indigo.shade900,
+          Colors.purple,
+        ]))),
         actions: [
           GestureDetector(
               onTap: () async {
@@ -111,19 +100,27 @@ class _ChatRoomState extends State<ChatRoom> {
               child: Center(
                   child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.menu),
-              )))
+                child: Icon(Icons.search),
+              ))),
+          GestureDetector(
+              onTap: () async {},
+              child: Center(
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.more_vert))))
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        iconSize: 30,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat_outlined), label: "Messages"),
+              icon: Icon(Icons.chat_rounded), label: "Messages"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_active_outlined),
-              label: "Notifications"),
+              icon: Icon(Icons.notifications_rounded), label: "Notifications"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined), label: "Settings")
+              icon: Icon(Icons.settings_rounded), label: "Settings")
         ],
       ),
       /*floatingActionButton: FloatingActionButton(
@@ -135,13 +132,17 @@ class _ChatRoomState extends State<ChatRoom> {
             });
           }),*/
       body: Container(
-        color: Colors.purple,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+          Colors.indigo.shade900,
+          Colors.purple,
+        ])),
         child: Container(
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40))),
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

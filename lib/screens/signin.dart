@@ -37,6 +37,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    bool _textFieldActive = false;
     AuthService authService = new AuthService();
     DatabaseMethods databaseMethods = new DatabaseMethods();
     TextEditingController _emailEditingController = new TextEditingController();
@@ -142,12 +143,20 @@ class _SignInState extends State<SignIn> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: Text(
-                        "Forgot password?",
-                        style: simpleTextStyle(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _textFieldActive = true;
+                          print("active");
+                        });
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Text(
+                          "Forgot password?",
+                          style: simpleTextStyle(),
+                        ),
                       ),
                     ),
                   ],
@@ -210,9 +219,10 @@ class _SignInState extends State<SignIn> {
               ],
             ),
           ),
-          Positioned(
-            left: -100,
-            top: -150,
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 1000),
+            left: _textFieldActive ? -400 : -100,
+            top: _textFieldActive ? 300 : -150,
             child: Container(
               width: 350,
               height: 350,
