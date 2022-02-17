@@ -114,6 +114,7 @@ class _ChatRoomState extends State<ChatRoom> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         iconSize: 30,
+        backgroundColor: Colors.grey[900],
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.chat_rounded), label: "Messages"),
@@ -142,7 +143,9 @@ class _ChatRoomState extends State<ChatRoom> {
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30))),
+                    topRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

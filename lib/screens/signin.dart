@@ -85,59 +85,61 @@ class _SignInState extends State<SignIn> {
             child: Column(
               children: [
                 Spacer(),
-                Form(
-                  key: _formKey,
-                  child: Column(children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          boxShadow: [
-                            BoxShadow(
-                                offset: Offset(4, 7),
-                                color: Colors.grey.shade200,
-                                blurRadius: 20),
-                          ]),
-                      child: TextFormField(
-                        controller: _emailEditingController,
-                        style: simpleTextStyle(),
-                        decoration: textFieldInputDecoration(
-                            "Email",
-                            Icon(
-                              Icons.email_outlined,
-                              color: Colors.purple,
-                            )),
+                SafeArea(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(4, 7),
+                                  color: Colors.grey.shade200,
+                                  blurRadius: 20),
+                            ]),
+                        child: TextFormField(
+                          controller: _emailEditingController,
+                          style: simpleTextStyle(),
+                          decoration: textFieldInputDecoration(
+                              "Email",
+                              Icon(
+                                Icons.email_outlined,
+                                color: Colors.purple,
+                              )),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 24),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          boxShadow: [
-                            BoxShadow(
-                                offset: Offset(4, 7),
-                                color: Colors.grey.shade200,
-                                blurRadius: 20),
-                          ]),
-                      child: TextFormField(
-                        controller: _passwordEditingController,
-                        obscureText: true,
-                        validator: (val) {
-                          return val!.length > 8
-                              ? null
-                              : "Password must have 8 characters or more";
-                        },
-                        style: simpleTextStyle(),
-                        decoration: textFieldInputDecoration(
-                            "Password",
-                            Icon(
-                              Icons.lock_outline,
-                              color: Colors.purple,
-                            )),
-                      ),
-                    )
-                  ]),
+                      SizedBox(height: 24),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(4, 7),
+                                  color: Colors.grey.shade200,
+                                  blurRadius: 20),
+                            ]),
+                        child: TextFormField(
+                          controller: _passwordEditingController,
+                          obscureText: true,
+                          validator: (val) {
+                            return val!.length > 8
+                                ? null
+                                : "Password must have 8 characters or more";
+                          },
+                          style: simpleTextStyle(),
+                          decoration: textFieldInputDecoration(
+                              "Password",
+                              Icon(
+                                Icons.lock_outline,
+                                color: Colors.purple,
+                              )),
+                        ),
+                      )
+                    ]),
+                  ),
                 ),
                 SizedBox(height: 5),
                 Row(
